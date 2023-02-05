@@ -25,7 +25,8 @@ export const PersonalInfoProfile = () => {
         tostMsg: "لم يتم تحديث البيانات",
         tostType: "error",
     });
-    const { user, updateUser } = useAuthContext();
+    const id=localStorage.getItem("uid");
+    const { user, updateUser,checkIfAuthenticated } = useAuthContext();
     const UploadAndDownImage = (event) => {
         const ImgeProfiles = event.target.files[0];
         setProgress(true);
@@ -33,7 +34,7 @@ export const PersonalInfoProfile = () => {
         uploadBytes(imageRef, ImgeProfiles).then((snapshot) => {
             getDownloadURL(snapshot.ref).then((url) => {
                 setImages(url);
-                updateDoc(doc(db, "donors", 'AtFv1cCtkCZxQapmqgHBADktwpv1'), { image: url }).then((response) => {
+                updateDoc(doc(db, "centers", id), { image: url }).then((response) => {
                     console.log(response);
                     setProgress(false);
                     updateUser({ ...user, image: url });
@@ -52,7 +53,6 @@ export const PersonalInfoProfile = () => {
             state: { name: "", id: "" },
             district: { name: "", id: "" },
             email: user?.email,
-            typeBlood: user?.blood_type,
         },
         validationSchema: Yup.object({
             username: Yup.string()
@@ -60,7 +60,6 @@ export const PersonalInfoProfile = () => {
                 .required("اسم المستخدم مطلوب"),
             neighborhood: Yup.string().max(255).required("اسم المنطقة مطلوب"),
             phone: Yup.string().max(255).required("رقم التلفون مطلوب"),
-            typeBlood: Yup.string().max(255).required("فصيلة الدم مطلوبة"),
         }),
         onSubmit: (values) => {
             console.log(values);
@@ -71,12 +70,11 @@ export const PersonalInfoProfile = () => {
                 name: values.username,
                 neighborhood: values.neighborhood,
                 district: values.district.name,
-                blood_type: values.typeBlood,
                 state: values.state.name,
                 phone: values.phone,
                 email: values.email,
             }
-            const userDoc = doc(db, "donors", '9U74upZiSOJugT9wrDnu');
+            const userDoc = doc(db, "centers", id );
             updateDoc(userDoc, newProfile).then((response) => {
                 setShowTost(true);
                 setTost({
@@ -85,6 +83,7 @@ export const PersonalInfoProfile = () => {
                 });
             });
            // updateUser({ ...values, image: imagess });
+           checkIfAuthenticated();
         },
     });
     const [City, setCity] = useState([]);
@@ -98,14 +97,13 @@ export const PersonalInfoProfile = () => {
         formik.setFieldValue('neighborhood', user?.neighborhood)
         formik.setFieldValue('phone', user?.phone)
         formik.setFieldValue('email', user?.email)
-        formik.setFieldValue('typeBlood', user?.blood_type)
         formik.setFieldValue('district', GetDistrict ? GetDistrict[0] : null)
     }, [user]);
 
 
     const HandleCity = (event, e) => {
-        const getStateid = e.id;
-        const getCitydata = Countryes.find(
+        const getStateid = e?.id;
+        const getCitydata = Countryes?.find(
             (country) => country.id === getStateid
         ).city;
         setCity(getCitydata);

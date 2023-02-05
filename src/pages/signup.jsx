@@ -35,6 +35,14 @@ const bloodTypes = ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"];
 const data = JSON.parse(JSON.stringify(Countryes));
 const Try = (props) => {
   const [token,setToken]=useState("");
+  const [latitude,setLatitude]=useState('');
+  const [longitude,setLongitude]=useState('');
+  useEffect(()=>{
+  navigator.geolocation.getCurrentPosition((position)=>{
+    setLatitude(position.coords.latitude);
+    setLongitude(position.coords.longitude);
+  })
+  },[])
   const [city, setCity] = useState(
     data?.map((item) => {
       return {
@@ -130,8 +138,8 @@ async function requestPermissions (){
                 state: values.cities.name,
                 district: values.governer.name,
                 neighborhood: values.address,
-                lon: "",
-                lat: "",
+                lon:longitude.toString() ,
+                lat: latitude.toString(),
                 is_shown_phone: "1",
                 is_shown: "1",
                 is_gps_on: "1",

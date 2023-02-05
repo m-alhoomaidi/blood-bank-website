@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   GoogleMap,
   Marker,
@@ -9,6 +9,7 @@ import {
 } from "@react-google-maps/api";
 import { nearestLocation } from "../../utils/get-nearest-location";
 import { Avatar, Box, Divider, Typography } from "@mui/material";
+import { AuthContext, useAuthContext } from "../../context/auth-context";
 
 const containerStyle = {
   width: "100%",
@@ -139,7 +140,8 @@ const options = {
 function createKey(location) {
   return location.lat + location.lng;
 }
-function MyComponent(props) {
+function MyComponent({ globalData }) {
+  console.log(globalData);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyBvzLHODduqVIBHvrQJzJlr6A5HhS0QBl4",
@@ -163,7 +165,11 @@ function MyComponent(props) {
     //   map.fitBounds(bounds);
     //   setMap(map);
     // }
-    const bounds = new window.google.maps.LatLngBounds(center);
+
+    const bounds = new window.google.maps.LatLngBounds({
+      lat: parseFloat(globalData[0]?.lat),
+      lng: parseFloat(globalData[0]?.lon),
+    });
     map.fitBounds(bounds);
     setMap(map);
   }, []);
@@ -186,112 +192,126 @@ function MyComponent(props) {
         margin: -10,
       }}
     >
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        options={{
-          styles: styleArray,
-          zoomControl: false,
-          streetViewControl: true,
-          mapTypeControl: false,
-          fullscreenControl: false,
-        }}
-        zoom={20}
-        onLoad={onLoad}
-        onUnmount={onUnmount}
-        style={{
-          width: "100%",
-        }}
-      >
-        <MarkerClusterer options={options}>
-          {(clusterer) => {
-            return data.map((item, index) => (
-              <>
-                <Marker
-                  clusterer={clusterer}
-                  key={index}
-                  position={item.coords}
-                  draggable={false}
-                  onClick={(e) => {
-                    const d = nearestLocation(
-                      data[index].coords,
-                      data[index + 1].coords
-                    );
-                    alert(
-                      "The space between " +
-                        data[index].name +
-                        " And " +
-                        data[index + 1].name +
-                        " = " +
-                        d.toString()
-                    );
-                  }}
-                  //
-                  // TODO-- location icon
-                  // icon={{
-                  //   path: google.maps.SymbolPath.CIRCLE,
-                  //   scale: 6,
-                  //   strokeColor: "#919eec",
-                  //   fillColor: "#FFFFFF",
-                  //   fillOpacity: 1,
-                  // }}
-                />
-                <OverlayView
-                  key={index * 100 + 1}
-                  position={item.coords}
-                  mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                  getPixelPositionOffset={(x, y) =>
-                    getPixelPositionOffset(x, y, { x: -30, y: -35 })
-                  }
-                >
-                  <Box
-                    sx={{
-                      background: `#203254`,
-                      padding: "7px 12px",
-                      fontSize: "11px",
-                      color: `white`,
-                      borderRadius: "4px",
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        gap: 1,
-                      }}
-                    >
-                      <Typography sx={{ fontSize: "8px" }}>
-                        {item?.name}
-                      </Typography>
-                      <Typography sx={{ fontSize: "8px" }}>
-                        {item?.bloodType}
-                      </Typography>
-                      {/* TODO-- Donor Avatar */}
-                      {/* <Avatar
-                                src="/images/profile.png"
-                                sx={{
-                                  height: "30px",
-                                  width: "30px",
-                                }}
-                              >
-                                {item?.name}
-                              </Avatar> */}
-                    </Box>
-                    <Box
-                      sx={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                      <Typography sx={{ fontSize: "8px" }}>
-                        {item?.phoneNumber}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </OverlayView>
-              </>
-            ));
+      {globalData?.length > 0 && (
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          options={{
+            styles: styleArray,
+            zoomControl: false,
+            streetViewControl: true,
+            mapTypeControl: false,
+            fullscreenControl: false,
           }}
-        </MarkerClusterer>
-      </GoogleMap>
+          zoom={20}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+          style={{
+            width: "100%",
+          }}
+        >
+          {globalData?.length > 0 && (
+            <MarkerClusterer options={options}>
+              {(clusterer) => {
+                return (
+                  globalData?.length > 0 &&
+                  globalData?.map((item, index) => (
+                    <>
+                      <Marker
+                        clusterer={clusterer}
+                        key={index}
+                        position={{
+                          lat: parseFloat(item?.lat),
+                          lng: parseFloat(item?.lon),
+                        }}
+                        // position={{
+                        //   lat: 13.920863446490008,
+                        //   lng: parseFloat(item?.data?.lon),
+                        // }}
+                        // position={{
+                        //   lat: 13.920863446490008,
+                        //   lng: 44.173475415106225,
+                        // }}
+                        draggable={false}
+                        onClick={(e) => {
+                          const d = nearestLocation(
+                            data[index].coords,
+                            data[index + 1].coords
+                          );
+                          alert(
+                            "The space between " +
+                              data[index].name +
+                              " And " +
+                              data[index + 1].name +
+                              " = " +
+                              d.toString()
+                          );
+                        }}
+                        //
+                        // TODO-- location icon
+                        // icon={{
+                        //   path: google.maps.SymbolPath.CIRCLE,
+                        //   scale: 6,
+                        //   strokeColor: "#919eec",
+                        //   fillColor: "#FFFFFF",
+                        //   fillOpacity: 1,
+                        // }}
+                      />
+                      <OverlayView
+                        key={index * 100 + 1}
+                        position={{
+                          lat: parseFloat(item?.lat),
+                          lng: parseFloat(item?.lon),
+                        }}
+                        mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                        getPixelPositionOffset={(x, y) =>
+                          getPixelPositionOffset(x, y, { x: -30, y: -35 })
+                        }
+                      >
+                        <Box
+                          sx={{
+                            background: `#203254`,
+                            padding: "7px 12px",
+                            fontSize: "11px",
+                            color: `white`,
+                            borderRadius: "4px",
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Typography sx={{ fontSize: "8px" }}>
+                              {item?.name}
+                            </Typography>
+                            <Typography sx={{ fontSize: "8px" }}>
+                              {item?.blood_type}
+                            </Typography>
+                          </Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <Typography sx={{ fontSize: "8px" }}>
+                              {item?.phone}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </OverlayView>
+                    </>
+                  ))
+                );
+              }}
+            </MarkerClusterer>
+          )}
+        </GoogleMap>
+      )}
     </div>
   ) : (
     <></>

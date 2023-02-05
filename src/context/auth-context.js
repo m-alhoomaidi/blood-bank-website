@@ -19,7 +19,7 @@ const initialState = {
     isLoading: false,
     user: {},
     mapData: {},
-    authType: "user",
+    authType: "",
 };
 
 const handlers = {
@@ -165,8 +165,8 @@ export const AuthProvider = (props) => {
     };
 
     const signOut = async () => {
-        localStorage.setItem('blood-bank-username', '')
-        localStorage.setItem('blood-bank-password', '')
+        localStorage.setItem('uid', '')
+        auth.signOut();
         dispatch({
             type: HANDLERS.SIGN_OUT
         });
@@ -181,7 +181,7 @@ export const AuthProvider = (props) => {
     }
     const AuthTypeUserOrCenter = (authType) => {
         dispatch({
-            type: HANDLERS.SEARCH_USER,
+            type: HANDLERS.AUTHTYPE,
             payload: authType,
         })
         // console.log(authType);
@@ -197,33 +197,38 @@ export const AuthProvider = (props) => {
 
 
     const checkIfAuthenticated = async () => {
-        const id = localStorage.getItem("uid");
-        const docRef = doc(db, "donors", id);
-        const docSnap = await getDoc(docRef);
-        const user = docSnap.data();
-        updateUser(user);
-        if (docSnap.exists()) {
-            AuthTypeUserOrCenter("user");
-            dispatch({
-                type: HANDLERS.SIGN_IN,
-                payload: user
-            });
-            return true
-
-        }
-        else {
-            const docCenter = doc(db, "centers", id);
-            const docSnapCenter = await getDoc(docCenter);
-            const user = docSnapCenter.data();
-            updateUser(user);
-            if (docSnap.exists()) {
-                AuthTypeUserOrCenter("center");
+        try {
+            const id = localStorage.getItem("uid");
+            const docRef = doc(db, "donors", id);
+            const docSnap = await getDoc(docRef);
+            const user = docSnap.data();
+            if (user) {
+                localStorage.setItem("type", "user")
+                updateUser(user);
                 dispatch({
                     type: HANDLERS.SIGN_IN,
                     payload: user
                 });
                 return true
+
             }
+            else {
+                const docCenter = doc(db, "centers", id);
+                const docSnapCenter = await getDoc(docCenter);
+                const user = docSnapCenter.data();
+                if (user) {
+                    localStorage.setItem("type", "center")
+                    updateUser(user);
+                    dispatch({
+                        type: HANDLERS.SIGN_IN,
+                        payload: user
+                    });
+                    return true
+                }
+            }
+        }
+        catch (err) {
+            console.log(err)
         }
     }
 

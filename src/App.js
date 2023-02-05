@@ -63,7 +63,7 @@ const App = () => {
                 {
                   path === '/' ?
                     <Footer /> :
-                    <SmallFooter />
+                    path != "/map" && <SmallFooter />
 
                 }
 

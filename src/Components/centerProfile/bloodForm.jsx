@@ -36,7 +36,7 @@ const BloodForm = () => {
         setbloodTypes(BloodType?.data());
     }    
     useEffect(()=>{
-        BloodTypes()
+        BloodTypes();
     },[])
     const HandleClick = ()=>{
         const docRef = doc(db, "centers", id);
@@ -58,28 +58,28 @@ const BloodForm = () => {
                     <Box >
                         <Grid container >
                             <Grid item md={6} xs={12} sx={{ my: 2 }} >
-                                <BloodTypeAmount title="A+" value={bloodTypes["A+"]} onChange={onChange} />
+                                <BloodTypeAmount title="A+" value={bloodTypes["A+"] || ""} onChange={onChange} />
                             </Grid>
                             <Grid item md={6} xs={12} sx={{ my: 2 }} >
-                                <BloodTypeAmount title="A-" value={bloodTypes["A-"]} onChange={onChange} />
+                                <BloodTypeAmount title="A-" value={bloodTypes["A-"] || ""} onChange={onChange} />
                             </Grid>
                             <Grid item md={6} xs={12} sx={{ my: 2 }} >
-                                <BloodTypeAmount title="AB+" value={bloodTypes["AB+"]} onChange={onChange} />
+                                <BloodTypeAmount title="AB+" value={bloodTypes["AB+"] || ""} onChange={onChange} />
                             </Grid>
                             <Grid item md={6} xs={12} sx={{ my: 2 }} >
-                                <BloodTypeAmount title="AB-" value={bloodTypes["AB-"]} onChange={onChange} />
+                                <BloodTypeAmount title="AB-" value={bloodTypes["AB-"] || ""} onChange={onChange} />
                             </Grid>
                             <Grid item md={6} xs={12} sx={{ my: 2 }} >
-                                <BloodTypeAmount title="B+" value={bloodTypes["B+"]} onChange={onChange} />
+                                <BloodTypeAmount title="B+" value={bloodTypes["B+"] || ""} onChange={onChange} />
                             </Grid>
                             <Grid item md={6} xs={12} sx={{ my: 2 }} >
-                                <BloodTypeAmount title="B-" value={bloodTypes["B-"]} onChange={onChange} />
+                                <BloodTypeAmount title="B-" value={bloodTypes["B-"] || ""} onChange={onChange} />
                             </Grid>
                             <Grid item md={6} xs={12} sx={{ my: 2 }} >
-                                <BloodTypeAmount title="O+" value={bloodTypes["O+"]} onChange={onChange} />
+                                <BloodTypeAmount title="O+" value={bloodTypes["O+"] || ""} onChange={onChange} />
                             </Grid>
                             <Grid item md={6} xs={12} sx={{ my: 2 }} >
-                                <BloodTypeAmount title="O-" value={bloodTypes["O-"]} onChange={onChange} />
+                                <BloodTypeAmount title="O-" value={bloodTypes["O-"] || "" } onChange={onChange} />
                             </Grid>
                         </Grid>
                     </Box>

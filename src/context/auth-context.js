@@ -166,8 +166,7 @@ export const AuthProvider = (props) => {
     };
 
     const signOut = async () => {
-        localStorage.setItem('blood-bank-username', '')
-        localStorage.setItem('blood-bank-password', '')
+        localStorage.setItem('uid', '')
         dispatch({
             type: HANDLERS.SIGN_OUT
         });

@@ -32,7 +32,7 @@ const navItems = [
   {
     id: 4,
     name: "تطوع معنا",
-    href: "/search",
+    href: "/map",
   },
 ];
 

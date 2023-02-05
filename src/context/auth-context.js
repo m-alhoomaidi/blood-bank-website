@@ -94,6 +94,7 @@ const handlers = {
     },
     [HANDLERS.SEARCH_USER]: (state, action) => {
         const mapData = action.payload;
+        console.log(mapData)
         return {
             ...state,
             isAuthenticated: true,

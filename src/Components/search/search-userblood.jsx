@@ -97,7 +97,9 @@ export const SearchUserBlood = () => {
       setsearchBlood(DataUser);
       setProgress(false);
       setClickIcon(true);
-      searchUserAndCenters({ Users: DataUser });
+      localStorage.setItem("userLocation", JSON.stringify(DataUser));
+
+      // searchUserAndCenters({ Users: DataUser });
     });
 
     const docRfNot = query(
@@ -132,8 +134,10 @@ export const SearchUserBlood = () => {
 
     await getDocs(docRfCenter).then((response) => {
       const DataCenter = response.docs.map((doc) => ({ data: doc.data() }));
+      localStorage.setItem("centerLocation", JSON.stringify(DataCenter));
       setsearchBloodCenter(DataCenter);
-      searchUserAndCenters({ Centers: DataCenter });
+      // TODO convert to state management
+      // searchUserAndCenters({ Centers: DataCenter });
     });
   };
   const [Stateid, setStateid] = useState([]);

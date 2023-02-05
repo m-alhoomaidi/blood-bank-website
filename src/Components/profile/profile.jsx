@@ -74,13 +74,13 @@ const Profile = () => {
   };
   const formik = useFormik({
     initialValues: {
-      username: user.name,
-      neighborhood: user.neighborhood,
-      phone: user.phone,
+      username: user?.name,
+      neighborhood: user?.neighborhood,
+      phone: user?.phone,
       state: { name: "", id: "" },
       district: { name: "", id: "" },
-      email: user.email,
-      typeBlood: user.blood_type,
+      email: user?.email,
+      typeBlood: user?.blood_type,
     },
     validationSchema: Yup.object({
       username: Yup.string().max(255).required("اسم المستخدم مطلوب"),
@@ -123,15 +123,15 @@ const Profile = () => {
     const GetDistrict =
       GetDistricts?.filter((district) => district?.name === user?.district) ||
       null;
-    formik.setFieldValue("username", user.name);
-    formik.setFieldValue("state", GetState[0]);
-    formik.setFieldValue("neighborhood", user.neighborhood);
-    formik.setFieldValue("phone", user.phone);
-    formik.setFieldValue("email", user.email);
-    formik.setFieldValue("typeBlood", user.blood_type);
+    formik.setFieldValue("username", user?.name);
+    formik.setFieldValue("state", GetState[0] || {});
+    formik.setFieldValue("neighborhood", user?.neighborhood);
+    formik.setFieldValue("phone", user?.phone);
+    formik.setFieldValue("email", user?.email);
+    formik.setFieldValue("typeBlood", user?.blood_type);
     formik.setFieldValue("district", GetDistrict ? GetDistrict[0] : null);
-    setImages(user.image);
-    setIsShown(user.is_shown);
+    setImages(user?.image);
+    setIsShown(user?.is_shown);
     // GetDataApi();
   }, [user]);
 

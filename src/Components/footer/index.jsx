@@ -48,7 +48,7 @@ export const SmallFooter = () => {
               src="/logo.png"
             />
             <Typography
-              sx={{ color: "#e3e1e8", mt: 1 }}
+              sx={{ color: "#e3e1e8", mt: 1, fontFamily: "fsalberarabic" }}
             >{`كل الحقوق محفوظة @${new Date()
               .toISOString()
               ?.slice(0, 4)}`}</Typography>
@@ -78,7 +78,13 @@ export const SmallFooter = () => {
               justifyContent: "center",
             }}
           >
-            <Typography sx={{ color: "#e3e1e8", textAlign: "center" }}>
+            <Typography
+              sx={{
+                color: "#e3e1e8",
+                textAlign: "center",
+                fontFamily: "fsalberarabic",
+              }}
+            >
               باستخدامك هذا الموقع، فإنك توافق على شروط الخدمة و سياسية الخصوصية
             </Typography>
           </Box>
@@ -129,7 +135,7 @@ export const Footer = () => {
             mt: 7,
             // height: "100vh",
             px: { xs: 3, md: 10 },
-            py: 7,
+            // py: 7,
           }}
         >
           <Grid container spacing={2}>

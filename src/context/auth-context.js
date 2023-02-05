@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useReducer, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom'
-import { collection, query, where, getDocs, getDoc,doc } from "firebase/firestore";
-import { db,auth } from "../utils/firebase";
+import { collection, query, where, getDocs, getDoc, doc } from "firebase/firestore";
+import { db, auth } from "../utils/firebase";
 import { AlertSnackBar } from '../Components/common/alert-snackbar';
 import { getOrigin } from '../utils/get-origin';
 const HANDLERS = {
@@ -10,23 +10,23 @@ const HANDLERS = {
     SIGN_IN: 'SIGN_IN',
     SIGN_OUT: 'SIGN_OUT',
     UPDATE_USER: 'UPDATE_USER',
-    SEARCH_USER:'SEARCH_USER',
-    AUTHTYPE:'AUTHTYPE',
+    SEARCH_USER: 'SEARCH_USER',
+    AUTHTYPE: 'AUTHTYPE',
 };
 
 const initialState = {
     isAuthenticated: false,
     isLoading: false,
     user: {},
-   mapData:{},
-   authType:"user",
+    mapData: {},
+    authType: "user",
 };
 
 const handlers = {
     [HANDLERS.INITIALIZE]: (state, action) => {
         const user = action.payload;
-        const authType =action.payload;
-        const mapData =action.payload;
+        const authType = action.payload;
+        const mapData = action.payload;
         return {
             ...state,
             ...(
@@ -40,7 +40,7 @@ const handlers = {
                     : ({
                         isLoading: false
                     }),
-                    authType
+                authType
                     ? ({
                         isAuthenticated: true,
                         isLoading: false,
@@ -49,7 +49,7 @@ const handlers = {
                     : ({
                         isLoading: false
                     }),
-                    mapData
+                mapData
                     ? ({
                         isAuthenticated: true,
                         isLoading: false,
@@ -57,7 +57,7 @@ const handlers = {
                     })
                     : ({
                         isLoading: false
-                })    
+                    })
             )
         };
     },
@@ -141,28 +141,28 @@ export const AuthProvider = (props) => {
         // if (querySnapshot?.docs?.length == 0) {
         //     const path = getOrigin()
         //     console.log(path)
-            // if (path == 'login') {
-            //     setShowTost(true);
-            //     setTost({
-            //         tostMsg: "عنوان البريد أو كلمة السر غير صحيحة",
-            //         tostType: "error",
-            //     });
-            // }
-    //         throw Error("there is an error")
-    //     }
-    //     else {
-    //         const user = querySnapshot.docs[0].data()
-    //         console.log(user.email)
-    //         localStorage.setItem('blood-bank-username', user.email)
-    //         localStorage.setItem('blood-bank-password', user.password)
-    //         delete user.password
-    //         dispatch({
-    //             type: HANDLERS.SIGN_IN,
-    //             payload: user
-    //         });
-    //         return true
-    //     }
-     };
+        // if (path == 'login') {
+        //     setShowTost(true);
+        //     setTost({
+        //         tostMsg: "عنوان البريد أو كلمة السر غير صحيحة",
+        //         tostType: "error",
+        //     });
+        // }
+        //         throw Error("there is an error")
+        //     }
+        //     else {
+        //         const user = querySnapshot.docs[0].data()
+        //         console.log(user.email)
+        //         localStorage.setItem('blood-bank-username', user.email)
+        //         localStorage.setItem('blood-bank-password', user.password)
+        //         delete user.password
+        //         dispatch({
+        //             type: HANDLERS.SIGN_IN,
+        //             payload: user
+        //         });
+        //         return true
+        //     }
+    };
 
     const signOut = async () => {
         localStorage.setItem('blood-bank-username', '')
@@ -172,19 +172,19 @@ export const AuthProvider = (props) => {
         });
     };
 
-     const searchUserAndCenters = (mapData)=>{
-           dispatch({
-              type: HANDLERS.SEARCH_USER,
-              payload: mapData,
-           })
-           console.log(mapData);
-       }
-       const AuthTypeUserOrCenter = (authType)=>{
+    const searchUserAndCenters = (mapData) => {
         dispatch({
-           type: HANDLERS.SEARCH_USER,
-           payload: authType,
+            type: HANDLERS.SEARCH_USER,
+            payload: mapData,
         })
-       // console.log(authType);
+        console.log(mapData);
+    }
+    const AuthTypeUserOrCenter = (authType) => {
+        dispatch({
+            type: HANDLERS.SEARCH_USER,
+            payload: authType,
+        })
+        // console.log(authType);
     }
 
     const updateUser = (user) => {
@@ -197,35 +197,36 @@ export const AuthProvider = (props) => {
 
 
     const checkIfAuthenticated = async () => {
-       // const id=localStorage.getItem("uid");
-       const id="JQfnKqa2aWNk1Gbaq39qUBmg0fb2";
-        const docRef = doc(db, "donors",id);
+        const id = localStorage.getItem("uid");
+        //    const id="JQfnKqa2aWNk1Gbaq39qUBmg0fb2";
+        const docRef = doc(db, "donors", id);
         const docSnap = await getDoc(docRef);
-        const user = docSnap.data(); 
-        updateUser(user); 
+        const user = docSnap.data();
+        updateUser(user);
         if (docSnap.exists()) {
             AuthTypeUserOrCenter("user");
             dispatch({
-                        type: HANDLERS.SIGN_IN,
-                        payload: user
-                    });
-                    return true
-            
-          } 
-        else{
-        const docCenter = doc(db, "centers",id);
-        const docSnapCenter = await getDoc(docCenter);
-        const user = docSnapCenter.data(); 
-        updateUser(user);
-        if (docSnap.exists()) {
-            AuthTypeUserOrCenter("center");
-            dispatch({
-                        type: HANDLERS.SIGN_IN,
-                        payload: user
-                    });
-                    return true
-          } 
-        }}
+                type: HANDLERS.SIGN_IN,
+                payload: user
+            });
+            return true
+
+        }
+        else {
+            const docCenter = doc(db, "centers", id);
+            const docSnapCenter = await getDoc(docCenter);
+            const user = docSnapCenter.data();
+            updateUser(user);
+            if (docSnap.exists()) {
+                AuthTypeUserOrCenter("center");
+                dispatch({
+                    type: HANDLERS.SIGN_IN,
+                    payload: user
+                });
+                return true
+            }
+        }
+    }
 
     const checkAuthenticated = async (user) => {
         dispatch({
@@ -238,8 +239,8 @@ export const AuthProvider = (props) => {
             value={{
                 ...state,
                 user: state.user,
-                mapData:state.mapData,
-                authType:state.authType,
+                mapData: state.mapData,
+                authType: state.authType,
                 AuthTypeUserOrCenter,
                 signIn,
                 signOut,

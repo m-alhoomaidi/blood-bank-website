@@ -174,7 +174,7 @@ export const GreetingSection = (props) => {
                       lineHeight: 2,
                     }}
                   >
-                    900000
+                    1300
                   </Typography>
                 </Box>
               </Box>

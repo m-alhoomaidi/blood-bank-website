@@ -38,7 +38,7 @@ const navigate = useNavigate();
       >
         <Typography variant="overline">حسابك الشخصي</Typography>
 
-        <Typography color="text.secondary" variant="body2" sx={{cursor:'pointer'}}onClick={()=>{
+        <Typography color="text.secondary" variant="body2" sx={{cursor:'pointer'}}onClick={()=>{ console.log(authType);
           if(authType === "user")
           { navigate('/profile');}
           else if(authType === "center"){

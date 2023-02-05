@@ -167,6 +167,7 @@ export const AuthProvider = (props) => {
 
     const signOut = async () => {
         localStorage.setItem('uid', '')
+        auth.signOut();
         dispatch({
             type: HANDLERS.SIGN_OUT
         });
@@ -201,8 +202,8 @@ export const AuthProvider = (props) => {
         const docRef = doc(db, "donors", id);
         const docSnap = await getDoc(docRef);
         const user = docSnap.data();
-        updateUser(user);
         if (docSnap.exists()) {
+            updateUser(user);
             AuthTypeUserOrCenter("user");
             dispatch({
                 type: HANDLERS.SIGN_IN,
@@ -215,8 +216,8 @@ export const AuthProvider = (props) => {
             const docCenter = doc(db, "centers", id);
             const docSnapCenter = await getDoc(docCenter);
             const user = docSnapCenter.data();
-            updateUser(user);
             if (docSnap.exists()) {
+                updateUser(user);
                 AuthTypeUserOrCenter("center");
                 dispatch({
                     type: HANDLERS.SIGN_IN,

@@ -19,7 +19,7 @@ const initialState = {
     isLoading: false,
     user: {},
     mapData: {},
-    authType: "user",
+    authType: "",
 };
 
 const handlers = {
@@ -94,7 +94,6 @@ const handlers = {
     },
     [HANDLERS.SEARCH_USER]: (state, action) => {
         const mapData = action.payload;
-        console.log(mapData)
         return {
             ...state,
             isAuthenticated: true,
@@ -182,7 +181,7 @@ export const AuthProvider = (props) => {
     }
     const AuthTypeUserOrCenter = (authType) => {
         dispatch({
-            type: HANDLERS.SEARCH_USER,
+            type: HANDLERS.AUTHTYPE,
             payload: authType,
         })
         // console.log(authType);
@@ -198,33 +197,38 @@ export const AuthProvider = (props) => {
 
 
     const checkIfAuthenticated = async () => {
-        const id = localStorage.getItem("uid");
-        const docRef = doc(db, "donors", id);
-        const docSnap = await getDoc(docRef);
-        const user = docSnap.data();
-        if (docSnap.exists()) {
-            updateUser(user);
-            AuthTypeUserOrCenter("user");
-            dispatch({
-                type: HANDLERS.SIGN_IN,
-                payload: user
-            });
-            return true
-
-        }
-        else {
-            const docCenter = doc(db, "centers", id);
-            const docSnapCenter = await getDoc(docCenter);
-            const user = docSnapCenter.data();
-            if (docSnap.exists()) {
+        try {
+            const id = localStorage.getItem("uid");
+            const docRef = doc(db, "donors", id);
+            const docSnap = await getDoc(docRef);
+            const user = docSnap.data();
+            if (user) {
+                localStorage.setItem("type", "user")
                 updateUser(user);
-                AuthTypeUserOrCenter("center");
                 dispatch({
                     type: HANDLERS.SIGN_IN,
                     payload: user
                 });
                 return true
+
             }
+            else {
+                const docCenter = doc(db, "centers", id);
+                const docSnapCenter = await getDoc(docCenter);
+                const user = docSnapCenter.data();
+                if (user) {
+                    localStorage.setItem("type", "center")
+                    updateUser(user);
+                    dispatch({
+                        type: HANDLERS.SIGN_IN,
+                        payload: user
+                    });
+                    return true
+                }
+            }
+        }
+        catch (err) {
+            console.log(err)
         }
     }
 

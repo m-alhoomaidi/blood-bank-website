@@ -1,4 +1,4 @@
-import React , { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Field, Formik, Form } from "formik";
 import * as Yup from "yup";
 import { Box, Button, TextField } from "@mui/material";
@@ -10,41 +10,37 @@ import LottieApp from "../Components/lottie";
 import { HEALTH_LOTTIE } from "../constant/media";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
-import { db, messaging} from "../utils/firebase";
+import { db, messaging } from "../utils/firebase";
 import { useState } from "react";
 import { AlertSnackBar } from "../Components/common/alert-snackbar";
 import { useNavigate } from "react-router-dom";
 import { getMessaging, getToken } from "firebase/messaging";
 const phoneRegExp = /7(1|7|3|8|0)([0-9]){7}/;
 const SignUpcenter = () => {
-  const [token,setToken]=useState("");
+  const [token, setToken] = useState("");
   const [showTost, setShowTost] = useState(false);
   const [tost, setTost] = useState({
     tostMsg: " البريد الإلكتروني موجود مسبقًا",
     tostType: "error",
   });
   const navigate = useNavigate();
-  async function requestPermissions (){
-    await Notification.requestPermission().then((permission)=>{
-      if(permission === 'granted'){
-        getToken(messaging,{vapidKey:'BBn3zGcKMynrgirvOIsFXTHoTHKNW-iX3FWefaw9zUVbRygfIzYSQqHqJabWsNcg5v-oYG2E1tDBsh42WR7RNzQ'}).then((token)=>{
-          
+  async function requestPermissions() {
+    await Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        getToken(messaging, {
+          vapidKey:
+            "BBn3zGcKMynrgirvOIsFXTHoTHKNW-iX3FWefaw9zUVbRygfIzYSQqHqJabWsNcg5v-oYG2E1tDBsh42WR7RNzQ",
+        }).then((token) => {
           setToken(token);
         });
-      } else if(permission === 'denied') 
-      {
-       alert("rrrrrrrrrrrrr")
-   
+      } else if (permission === "denied") {
       }
-     
-  
-     });
-    }
-    useEffect(()=>{
-      requestPermissions();
-  
-    },[]);
-   
+    });
+  }
+  useEffect(() => {
+    requestPermissions();
+  }, []);
+
   return (
     <>
       <Grid container component="main" sx={{ mt: 8, dir: "ltr" }}>
@@ -106,12 +102,12 @@ const SignUpcenter = () => {
                     .email()
                     .required("مطلوب إدخال ايميل"),
                   centerPhoneNumber: Yup.string()
-                    .max(9,"يجب إدخال رقم صالح")
-                    .min(9,"يجب إدخال رقم صالح")
+                    .max(9, "يجب إدخال رقم صالح")
+                    .min(9, "يجب إدخال رقم صالح")
                     .matches(phoneRegExp, "مطلوب إدخال رقم هاتف")
                     .required("مطلوب إدخال رقم هاتف"),
                   centerPassword: Yup.string()
-                    .min(6,"لا يقل عن 6 أرقام ")
+                    .min(6, "لا يقل عن 6 أرقام ")
                     .required("مطلوب  إدخال كلمة سر"),
                 })}
                 onSubmit={(values, { setSubmitting }) => {

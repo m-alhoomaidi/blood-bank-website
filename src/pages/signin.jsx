@@ -49,6 +49,7 @@ export default function SignInSide() {
       signInWithEmailAndPassword(auth, username, password)
         .then((userCredential) => {
           localStorage.setItem("uid", auth?.currentUser?.uid);
+          checkIfAuthenticated()
           navigate("/");
         })
         .catch((error) => {

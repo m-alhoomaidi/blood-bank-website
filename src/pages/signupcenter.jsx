@@ -124,7 +124,8 @@ const SignUpcenter = () => {
                   )
                     .then((userCredential) => {
                       localStorage.setItem("uid", auth?.currentUser?.uid);
-                      const uid = userCredential.user.uid;
+                      const uid = userCredential?.user?.uid;
+                      console.log(uid);
                       setDoc(
                         doc(db, "centers", uid),
                         JSON.stringify({

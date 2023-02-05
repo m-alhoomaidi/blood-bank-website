@@ -35,6 +35,7 @@ import { useAuthContext } from "../context/auth-context";
 const bloodTypes = ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"];
 const data = JSON.parse(JSON.stringify(Countryes));
 const Try = (props) => {
+  const { checkIfAuthenticated } = useAuthContext();
   const [token,setToken]=useState("");
   const [latitude,setLatitude]=useState('');
   const [longitude,setLongitude]=useState('');
@@ -42,12 +43,12 @@ const Try = (props) => {
   navigator.geolocation.getCurrentPosition((position)=>{
     setLatitude(position.coords.latitude);
     setLongitude(position.coords.longitude);
-  })
+  }) 
   },[])
   const [city, setCity] = useState(
     data?.map((item) => {
       return {
-        id: item?.id,
+        id: item?.id, 
         name: item?.name,
       };
     })

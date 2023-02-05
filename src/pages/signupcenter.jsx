@@ -18,6 +18,7 @@ import { getMessaging, getToken } from "firebase/messaging";
 import { useAuthContext } from "../context/auth-context";
 const phoneRegExp = /7(1|7|3|8|0)([0-9]){7}/;
 const SignUpcenter = () => {
+  const { checkIfAuthenticated } = useAuthContext();
   const [latitude,setLatitude]=useState('');
   const [longitude,setLongitude]=useState('');
   useEffect(()=>{

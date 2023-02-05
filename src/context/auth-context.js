@@ -197,8 +197,7 @@ export const AuthProvider = (props) => {
 
 
     const checkIfAuthenticated = async () => {
-       // const id=localStorage.getItem("uid");
-       const id="JQfnKqa2aWNk1Gbaq39qUBmg0fb2";
+        const id=localStorage.getItem("uid");
         const docRef = doc(db, "donors",id);
         const docSnap = await getDoc(docRef);
         const user = docSnap.data(); 

@@ -41,10 +41,12 @@ export const CardSearch = ({nameSearch,bloodType,neighborhood}) => {
                 },}} ><LocalPhoneIcon /></Button></a>
             </Grid>
             <Grid item >
+            <a href="sms:776259340" >
                 <Button variant="contained" sx={{background:"#f79898", "&:hover": {
                   backgroundColor: "#df2525",
                   textDecoration: "none",
                 },}}><MessageIcon /></Button>
+                </a>
              </Grid>
             </Grid>
           </Box>

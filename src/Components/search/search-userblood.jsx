@@ -15,29 +15,33 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
-import { collection, getDoc, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDoc, getDocs, query, where } from "firebase/firestore";
 import {TypeBlood, TypeBloodSame, Apositive, Bpositive, ABpositive, Opositive, ABnegative, Anegative, Bnegative, Onegative, style, styleFocus } from "./function-api";
 import { Grow, IconButton, Typography } from "@mui/material";
 import SearchCenter from "./searchCenter";
 import { useAuthContext } from "../../context/auth-context";
 export const SearchUserBlood = () => {
-const { searchUserAndCenters } = useAuthContext();
+const { searchUserAndCenters,AuthTypeUserOrCenter } = useAuthContext();
   const [searchBlood, setsearchBlood] = useState([]);
   const [searchBloodCenter, setsearchBloodCenter] = useState([]);
   const [district, setdistrict] = useState('');
-  const [NotData, setNotData] = useState(false);
   const [typeBlood, setTypeBlood] = useState();
   const [Transion, setTransion] = useState(false);
   const [Progress, setProgress] = useState(false);
   const [BloodIconShow, setBloodIconShow] = useState(false);
   const [state, setState] = useState('');
-  const [noti,setNoti] =useState([])
+  const userType = "0";
+  if(AuthTypeUserOrCenter === "user"){
+    userType = "1";
+  }
+  else if(AuthTypeUserOrCenter === "center") {
 
+    userType = "2";
+  }
   const SendNotification = async (tokens) => {
     const title = "حالة حرجة";
   const body="زمرة الدم";
   const {to}=tokens
-  console.log(tokens);
     return await fetch('https://fcm.googleapis.com/fcm/send', {
         method: "POST",
         headers: {
@@ -50,7 +54,7 @@ const { searchUserAndCenters } = useAuthContext();
             to: to
         })
     }).then((res) => {
-        console.log(res)
+        //console.log(res)
        
     })
         .catch((err) => {
@@ -58,6 +62,7 @@ const { searchUserAndCenters } = useAuthContext();
         })
 
   }
+  
 
   const SearhBloold = async () => {
     setProgress(true);
@@ -86,13 +91,18 @@ const { searchUserAndCenters } = useAuthContext();
       const DataUser = response.docs.map((doc) => ({ data: doc.data(), id: doc.id }));
       DataUser.map((user,index)=>{
         SendNotification( { to :user?.data?.token});
+     addDoc(collection(db, "search_logs"), {
+      blood_type : typeBlood,
+      district : district,
+      data:new Date().toISOString(),
+      donors_count :DataUser.length.toString()-2,
+      user_type : userType,
+      token :user?.data?.token,
+      state :state,
+        });
       })
       
     })
-
-
-
-
     const docRfCenter = query(
       collection(db, "centers"),
       where("state", "==", state),
@@ -105,6 +115,7 @@ const { searchUserAndCenters } = useAuthContext();
       searchUserAndCenters({Centers:DataCenter});
      
     })
+     
 
   }
   const [Stateid, setStateid] = useState([]);

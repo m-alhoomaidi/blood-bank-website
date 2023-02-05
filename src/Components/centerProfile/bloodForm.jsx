@@ -6,6 +6,11 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { useState } from "react";
 import ProfileNavigation from "./list-profile";
+import { useEffect } from "react";
+import { useAuthContext } from "../../context/auth-context";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../../utils/firebase";
+import { AlertSnackBar } from "../common/alert-snackbar";
 const data = {
     "A+": 15,
     "A-": 10,
@@ -17,7 +22,33 @@ const data = {
     "O-": 1,
 }
 const BloodForm = () => {
+    const { user, updateUser, checkIfAuthenticated } = useAuthContext();
+    const id = localStorage.getItem("uid");
     const [bloodTypes, setbloodTypes] = useState(data);
+    const [showTost, setShowTost] = useState(false);
+    const [tost, setTost] = useState({
+      tostMsg: "لم يتم تحديث البيانات",
+      tostType: "error",
+    });
+    const BloodTypes= async ()=>{
+        const docRef = doc(db, "centers", id);
+        const BloodType = await getDoc(docRef);
+        setbloodTypes(BloodType?.data());
+    }    
+    useEffect(()=>{
+        BloodTypes()
+    },[])
+    const HandleClick = ()=>{
+        const docRef = doc(db, "centers", id);
+      updateDoc(docRef, {...bloodTypes}).then((response) => {
+        setShowTost(true);
+        setTost({
+          tostMsg: "لقد تم تحديث البيانات بنجاح",
+          tostType: "success",
+        });
+      });
+      checkIfAuthenticated();
+    }
     const onChange = (key, value) => {
         setbloodTypes({ ...bloodTypes, [key]: value })
     }
@@ -61,9 +92,16 @@ const BloodForm = () => {
                   mt: 3,
                   mb: 2,
                 }}
+                onClick={HandleClick}
               >
                 حفظ البيانات
               </Button>
+              <AlertSnackBar
+          open={showTost}
+          handleClose={() => setShowTost(false)}
+          message={tost.tostMsg}
+          type={tost.tostType}
+        />
         </>
     );
 };

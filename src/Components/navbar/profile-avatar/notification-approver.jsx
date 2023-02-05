@@ -45,7 +45,7 @@ export const NotificationPopover = (props) => {
         onClose={onClose}
         open={open}
         PaperProps={{
-          sx: { width: "400px", height: "90%" },
+          sx: { width: "400px" },
         }}
         {...other}
         sx={{

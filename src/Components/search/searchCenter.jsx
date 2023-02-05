@@ -1,81 +1,96 @@
 import React, { useEffect, useState } from "react";
-import Box from "@mui/material/Grid";
+import Grid from "@mui/material/Grid";
 import CardSearchCenter from "./card-search-center";
 
 
 const SearchCenter = ({ resultSearchCenter, BloodType }) => {
     return (
-        <Box>
+        <Grid
+        container
+        spacing={3}
+        sx={{
+          marginTop: "10px",
+          justifyContent: "center",
+        }}
+      >
             {resultSearchCenter.map((user, index) => {
                 return (
                     BloodType === "A+" ?
+                    <Grid item xs={10} md={3.5} key={index}>
                         <CardSearchCenter
                             nameSearch={user.data.name}
                             CountBloodType={user.data["A+"]}
                             bloodType={BloodType}
                             neighborhood={user.data.neighborhood}
                             sx={{ margin: "10px", p: 2 }}
-                            key={index} /> :
+                            /></Grid> :
                         BloodType === "B+" ?
+                        <Grid item xs={10} md={3.5} key={index}>
                             <CardSearchCenter
                                 nameSearch={user.data.name}
                                 bloodType={BloodType}
                                 CountBloodType={user.data["B+"]}
                                 neighborhood={user.data.neighborhood}
                                 sx={{ margin: "10px", p: 2 }}
-                                key={index} /> :
+                                /></Grid> :
                             BloodType === "AB+" ?
+                            <Grid item xs={10} md={3.5} key={index}>
                                 <CardSearchCenter
                                     nameSearch={user.data.name}
                                     CountBloodType={user.data["AB+"]}
                                     bloodType={BloodType}
                                     neighborhood={user.data.neighborhood}
                                     sx={{ margin: "10px", p: 2 }}
-                                    key={index} /> :
+                                     /> </Grid>:
                             BloodType === "O+" ?
+                            <Grid item xs={10} md={3.5} key={index}>
                                 <CardSearchCenter
                                     nameSearch={user.data.name}
                                     bloodType={BloodType}
                                 CountBloodType={user.data["O+"]}
                                     neighborhood={user.data.neighborhood}
                                     sx={{ margin: "10px", p: 2 }}
-                                        key={index} /> :
+                                         /></Grid> :
                             BloodType === "AB-" ?
+                            <Grid item xs={10} md={3.5} key={index}>
                                 <CardSearchCenter
                                     nameSearch={user.data.name}
                                     bloodType={BloodType}
                                 CountBloodType={user.data["AB-"]}
                                     neighborhood={user.data.neighborhood}
                                     sx={{ margin: "10px", p: 2 }}
-                                    key={index} /> :
+                                     /></Grid> :
                             BloodType === "O-" ?
+                            <Grid item xs={10} md={3.5} key={index}>
                                 <CardSearchCenter
                                     nameSearch={user.data.name}
                                     bloodType={BloodType}
                                 CountBloodType={user.data["O-"]}
                                     neighborhood={user.data.neighborhood}
                                     sx={{ margin: "10px", p: 2 }}
-                                    key={index} /> :
+                                   /></Grid> :
                             BloodType === "A-" ?
+                            <Grid item xs={10} md={3.5} key={index}>
                                 <CardSearchCenter
                                     nameSearch={user.data.name}
                                     bloodType={BloodType}
                                 CountBloodType={user.data["A-"]}
                                     neighborhood={user.data.neighborhood}
                                     sx={{ margin: "10px", p: 2 }}
-                                    key={index} /> :
+                                     /> </Grid>:
                             BloodType === "B-" ?
+                            <Grid item xs={10} md={3.5} key={index}>
                                 <CardSearchCenter
                                       nameSearch={user.data.name}
                                       bloodType={BloodType}
                                 CountBloodType={user.data["B-"]}
                                       neighborhood={user.data.neighborhood}
                                     sx={{ margin: "10px", p: 2 }}
-                                    key={index} /> 
+                                     /></Grid> 
                             : ""
                        );
              } )    }
-        </Box>
+        </Grid>
     );
 }
 export default SearchCenter;

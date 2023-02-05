@@ -98,6 +98,7 @@ export const PersonalInfoProfile = () => {
         formik.setFieldValue('phone', user?.phone)
         formik.setFieldValue('email', user?.email)
         formik.setFieldValue('district', GetDistrict ? GetDistrict[0] : null)
+        setImages(user?.image);
     }, [user]);
 
 

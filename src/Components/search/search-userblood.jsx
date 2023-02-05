@@ -400,15 +400,14 @@ export const SearchUserBlood = () => {
               </Grid>
             </Grid>
             <Box justifyContent="center" flexDirection="row" mt="2px">
-              {" "}
-              {Progress ? (
-                <CircularProgress />
-              ) : ClickIcon ? (
+              {Progress ? 
+               <Box sx={{display:"flex",justifyContent:"center",mt:"5"}}> <CircularProgress /></Box>
+               : ClickIcon ? 
                 <TypeBloodSame
                   resultSearch={searchBlood}
                   BloodType={typeBlood}
                 />
-              ) : (
+              : 
                 <Grid
                   container
                   justifyContent="center"
@@ -418,7 +417,7 @@ export const SearchUserBlood = () => {
                 >
                   {searchBlood.map((user, index) => {
                     return clickBloodType === user.data.blood_type &&
-                      user.data.is_shown === "1" ? (
+                      user.data.is_shown === "1" ? 
                       <Grid item xs={10} md={3.5} key={index}>
                         <CardSearch
                           nameSearch={user.data.name}
@@ -427,39 +426,22 @@ export const SearchUserBlood = () => {
                           sx={{ margin: "10px", p: 2 }}
                         />
                       </Grid>
-                    ) : (
-                      ""
-                    );
+                     : ""
                   })}
                 </Grid>
-              )}
-            </Box>{" "}
+              }
+            </Box>
           </TabPanel>
-          {setsearchBloodCenter.length > 0 ? (
             <TabPanel value="2">
-              <Grid
-                container
-                spacing={3}
-                sx={{
-                  marginTop: "40px",
-                  justifyContent: "center",
-                }}
-              >
-                {Progress ? (
+                {Progress ? 
                   <CircularProgress />
-                ) : (
-                  <Grid item xs={10} md={4}>
+                 : 
                     <SearchCenter
                       resultSearchCenter={searchBloodCenter}
                       BloodType={typeBlood}
                     />
-                  </Grid>
-                )}
-              </Grid>
+                }
             </TabPanel>
-          ) : (
-            ""
-          )}
         </TabContext>
       </Box>
     </Box>

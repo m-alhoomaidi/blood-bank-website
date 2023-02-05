@@ -9,6 +9,7 @@ import { AccountPopover } from "./account-approver";
 import { NotificationPopover } from "./notification-approver";
 import { useAuthContext } from "../../../context/auth-context";
 import { SingInSingOutPopover } from "./singin-signput-approver";
+import { useNotificationContext } from "../../../context/notification-context";
 export const ProfileAvatar = ({ props, ...rest }) => {
   const [toggle, setToggle] = useState(false);
   const [openAccountPopover, setOpenAccountPopover] = useState(false);
@@ -19,7 +20,7 @@ export const ProfileAvatar = ({ props, ...rest }) => {
   const notificationRef = useRef(null);
   const singInSingOutRef = useRef();
   const navigate = useNavigate();
-
+  const {notificationDonors}=useNotificationContext();
   const { user, signIn, checkAuthenticated, isAuthenticated } =
     useAuthContext();
 
@@ -57,7 +58,7 @@ export const ProfileAvatar = ({ props, ...rest }) => {
                 ref={notificationRef}
                 onClick={() => setOpenNotificationPopover(true)}
               >
-                <Badge badgeContent={4} color="error">
+                <Badge badgeContent={notificationDonors?.length} color="error">
                   <NotificationsIcon
                     sx={{
                       fontSize: 30,

@@ -15,8 +15,10 @@ import { useState } from "react";
 import { AlertSnackBar } from "../Components/common/alert-snackbar";
 import { useNavigate } from "react-router-dom";
 import { getMessaging, getToken } from "firebase/messaging";
+import { useAuthContext } from "../context/auth-context";
 const phoneRegExp = /7(1|7|3|8|0)([0-9]){7}/;
 const SignUpcenter = () => {
+  const { checkIfAuthenticated } = useAuthContext();
   const [token, setToken] = useState("");
   const [showTost, setShowTost] = useState(false);
   const [tost, setTost] = useState({
@@ -124,7 +126,7 @@ const SignUpcenter = () => {
                       console.log(uid);
                       setDoc(
                         doc(db, "centers", uid),
-                        JSON.stringify({
+                        {
                           name: values.centerName,
                           email: values.centerEmail,
                           phone: values.centerPhoneNumber,
@@ -149,8 +151,9 @@ const SignUpcenter = () => {
                           image: "",
                           token: token,
                           status: "ACTIVE",
-                        })
+                        }
                       );
+                      checkIfAuthenticated();
                     })
                     .catch((error) => {
                       if (

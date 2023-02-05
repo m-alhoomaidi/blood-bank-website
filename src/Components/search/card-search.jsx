@@ -26,10 +26,13 @@ export const CardSearch = ({nameSearch,bloodType,neighborhood}) => {
            
             </Grid>
           <Grid container spacing={2} sx={{justifyContent:"center",flexDirection:"column" }} >
+          {neighborhood === "" ? <Grid item >
+              <Typography sx={{marginRight:"80px"}}>المنطقة - غير معروف</Typography>
+            </Grid> :
            <Grid item >
               <Typography sx={{marginRight:"80px"}}>المنطقة - {neighborhood}</Typography>
             </Grid>
-           
+}
           </Grid>
           <Box  sx={{margin:"20px 20px",display:"flex",justifyContent:'center'}}>
             <Grid container spacing={6} sx={{justifyContent:"center"}}>

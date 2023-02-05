@@ -18,7 +18,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { FlexVertical } from "../common/flex-vertical";
 
 export const ModalViewNotification = (props) => {
+
   const { open, handleClose, notification } = props;
+ 
   return (
     <>
       <Modal

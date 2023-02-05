@@ -31,10 +31,12 @@ import { useNavigate } from "react-router-dom";
 import Countryes from "../Local/Data.json";
 import { getMessaging, getToken } from "firebase/messaging";
 import { app } from "../utils/firebase";
+import { useAuthContext } from "../context/auth-context";
 const bloodTypes = ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"];
 const data = JSON.parse(JSON.stringify(Countryes));
 const Try = (props) => {
   const [token,setToken]=useState("");
+  const { checkIfAuthenticated } = useAuthContext();
   const [city, setCity] = useState(
     data?.map((item) => {
       return {
@@ -139,6 +141,7 @@ async function requestPermissions (){
                 token:token,
                 status: "ACTIVE",
               });
+              checkIfAuthenticated();
               navigate("/");
             })
             .catch((error) => {

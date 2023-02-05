@@ -1,0 +1,59 @@
+  nav {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 500px;
+    z-index: 9999;
+  }
+  
+  .background {
+    position: absolute;
+    display: flex;
+    justify-content:center;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: #fff;
+  }
+  
+  .btn-toggle {
+    outline: none;
+    border: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: pointer;
+    position: absolute;
+    top: 18px;
+    left: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: transparent;
+  }
+  
+  .motion-ul,
+  .motion-li {
+    margin: 0;
+    padding: 0;
+    width: 95%;
+  }
+  
+  .motion-ul {
+    position: absolute;
+    top: 100px;
+  }
+  
+  .motion-li {
+    list-style: none;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }

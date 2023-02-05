@@ -1,0 +1,17 @@
+.progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--red);
+    transform-origin: 0%;
+    background-color: #3d3b87;
+    z-index: 10000000;
+    /* margin-top: 5px; */
+  }
+
+  @font-face {
+    font-family: fsalberarabic;
+    src: url(/src/fonts/alfont_com_AlFont_com_FSAlbertArabic-Thin.ttf);
+  }

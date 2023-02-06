@@ -228,11 +228,17 @@ export const GreetingSection = (props) => {
       <section>
         <Grid container sx={{ mt: 10 }}>
           <Grid item xs={0} md={6}>
-            <Box>
+            <Box
+              sx={{
+                p: 5,
+              }}
+            >
               <CardMedia
                 component="img"
-                sx={{}}
-                src="https://wateenapp.org/Assets/images/screen_5.png"
+                sx={{
+                  borderRadius: 3,
+                }}
+                src="/images/app.jpg"
               />
             </Box>
           </Grid>
@@ -320,6 +326,39 @@ export const GreetingSection = (props) => {
             </Box>
           </Grid>
         </Grid>
+      </section>
+
+      <section>
+        <Typography
+          variant="h3"
+          color="primary"
+          sx={{
+            textAlign: "center",
+            mt: 6,
+          }}
+        >
+          الرعاة والداعمين
+        </Typography>
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            mt: 4,
+          }}
+        >
+          <Box>
+            <CardMedia component="img" src="/images/ibb.png" />
+            <Typography
+              color="secondary"
+              variant="h4"
+              sx={{ mt: 3, textAlign: "center", fontFamily: "fsalberarabic" }}
+            >
+              قسم علوم حاسوب وتقنية معلومات - جامعة إب
+            </Typography>
+          </Box>
+        </Box>
       </section>
     </>
     // <Box>

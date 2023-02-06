@@ -31,8 +31,8 @@ const navItems = [
   },
   {
     id: 4,
-    name: "تطوع معنا",
-    href: "/map",
+    name: "اعثر على متبرع",
+    href: "/search",
   },
 ];
 

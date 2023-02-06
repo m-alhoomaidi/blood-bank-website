@@ -374,7 +374,7 @@ const Profile = () => {
           </Card>
         </Grid>
         <Grid item md={10} xs={12}>
-          {displayNone || IsShown === "1" ? (
+          {displayNone && IsShown === "1" ? (
             <Card sx={{ marginTop: "10px", p: 1 }}>
               <CardHeader
                 title="إلغاء تنشيط عملية التبرع"

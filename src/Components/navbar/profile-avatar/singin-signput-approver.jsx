@@ -1,6 +1,8 @@
 import {
+  Avatar,
   Box,
   Button,
+  CardMedia,
   MenuItem,
   MenuList,
   Popover,
@@ -34,10 +36,26 @@ export const SingInSingOutPopover = (props) => {
         sx={{
           py: 1.5,
           px: 2,
+          display: "flex",
+          alignItems: "center",
+          gap: 3,
         }}
       >
-        <Typography variant="overline">
-          {"بنك الدم اليمني الإلكتروني"}
+        <CardMedia
+          component="img"
+          sx={{
+            width: "40px",
+            height: "40px",
+          }}
+          src="/logo.png"
+        />
+        <Typography
+          color="primary"
+          sx={{
+            fontSize: "20px",
+          }}
+        >
+          نبض
         </Typography>
       </Box>
       <MenuList
@@ -58,12 +76,9 @@ export const SingInSingOutPopover = (props) => {
             onClick={() => navigate("/signup")}
             fullWidth
             variant="contained"
+            color="primary"
             sx={{
-              backgroundColor: SECONDARY_COLOR,
-
-              "&:hover": {
-                backgroundColor: SECONDARY_COLOR,
-              },
+              fontFamily: "fsalberarabic",
             }}
           >
             انشاء حساب
@@ -74,12 +89,9 @@ export const SingInSingOutPopover = (props) => {
             onClick={() => navigate("/login")}
             fullWidth
             variant="contained"
+            color="primary"
             sx={{
-              backgroundColor: SECONDARY_COLOR,
-
-              "&:hover": {
-                backgroundColor: SECONDARY_COLOR,
-              },
+              fontFamily: "fsalberarabic",
             }}
           >
             تسجيل الدخول

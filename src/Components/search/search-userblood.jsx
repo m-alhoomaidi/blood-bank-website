@@ -15,6 +15,7 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import AddLocationIcon from "@mui/icons-material/AddLocation";
 import {
   addDoc,
   collection,
@@ -40,6 +41,7 @@ import {
 import { Grow, IconButton, Typography } from "@mui/material";
 import SearchCenter from "./searchCenter";
 import { useAuthContext } from "../../context/auth-context";
+import { useNavigate } from "react-router-dom";
 export const SearchUserBlood = () => {
   const { searchUserAndCenters, AuthTypeUserOrCenter } = useAuthContext();
   const [searchBlood, setsearchBlood] = useState([]);
@@ -81,6 +83,7 @@ export const SearchUserBlood = () => {
       });
   };
 
+  const navigate = useNavigate();
   const SearhBloold = async () => {
     setProgress(true);
     const docRf = query(
@@ -229,15 +232,24 @@ export const SearchUserBlood = () => {
             />
           </Grid>
           <Grid item xs={10} md={1.6}>
-            <Button
-              variant="contained"
-              fullWidth
-              sx={{ marginTop: "10px" }}
-              color="primary"
-              onClick={SearhBloold}
-            >
-              بــحــث
-            </Button>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Button
+                variant="contained"
+                fullWidth
+                sx={{ marginTop: "10px" }}
+                color="primary"
+                onClick={SearhBloold}
+              >
+                بــحــث
+              </Button>
+              <IconButton
+                onClick={() => {
+                  navigate("/map");
+                }}
+              >
+                <AddLocationIcon color="primary" />
+              </IconButton>
+            </Box>
           </Grid>
         </Grid>
       </Card>
@@ -400,14 +412,19 @@ export const SearchUserBlood = () => {
               </Grid>
             </Grid>
             <Box justifyContent="center" flexDirection="row" mt="2px">
-              {Progress ? 
-               <Box sx={{display:"flex",justifyContent:"center",mt:"5"}}> <CircularProgress /></Box>
-               : ClickIcon ? 
+              {Progress ? (
+                <Box
+                  sx={{ display: "flex", justifyContent: "center", mt: "5" }}
+                >
+                  {" "}
+                  <CircularProgress />
+                </Box>
+              ) : ClickIcon ? (
                 <TypeBloodSame
                   resultSearch={searchBlood}
                   BloodType={typeBlood}
                 />
-              : 
+              ) : (
                 <Grid
                   container
                   justifyContent="center"
@@ -417,7 +434,7 @@ export const SearchUserBlood = () => {
                 >
                   {searchBlood.map((user, index) => {
                     return clickBloodType === user.data.blood_type &&
-                      user.data.is_shown === "1" ? 
+                      user.data.is_shown === "1" ? (
                       <Grid item xs={10} md={3.5} key={index}>
                         <CardSearch
                           nameSearch={user.data.name}
@@ -426,22 +443,24 @@ export const SearchUserBlood = () => {
                           sx={{ margin: "10px", p: 2 }}
                         />
                       </Grid>
-                     : ""
+                    ) : (
+                      ""
+                    );
                   })}
                 </Grid>
-              }
+              )}
             </Box>
           </TabPanel>
-            <TabPanel value="2">
-                {Progress ? 
-                  <CircularProgress />
-                 : 
-                    <SearchCenter
-                      resultSearchCenter={searchBloodCenter}
-                      BloodType={typeBlood}
-                    />
-                }
-            </TabPanel>
+          <TabPanel value="2">
+            {Progress ? (
+              <CircularProgress />
+            ) : (
+              <SearchCenter
+                resultSearchCenter={searchBloodCenter}
+                BloodType={typeBlood}
+              />
+            )}
+          </TabPanel>
         </TabContext>
       </Box>
     </Box>

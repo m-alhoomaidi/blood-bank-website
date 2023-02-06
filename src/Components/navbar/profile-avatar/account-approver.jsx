@@ -36,12 +36,22 @@ export const AccountPopover = (props) => {
           px: 2,
         }}
       >
-        <Typography variant="overline">حسابك الشخصي</Typography>
+        <Typography
+        // sx={{
+        //   fontFamily: "fsalberarabic",
+        // }}
+        >
+          حسابك الشخصي
+        </Typography>
 
         <Typography
           color="text.secondary"
           variant="body2"
-          sx={{ cursor: "pointer" }}
+          sx={{
+            cursor: "pointer",
+            fontFamily: "fsalberarabic",
+            color: "black",
+          }}
           onClick={() => {
             const type = localStorage.getItem("type");
             if (type === "user") {
@@ -77,7 +87,7 @@ export const AccountPopover = (props) => {
             variant="contained"
             sx={{
               backgroundColor: SECONDARY_COLOR,
-
+              fontFamily: "fsalberarabic",
               "&:hover": {
                 backgroundColor: SECONDARY_COLOR,
               },

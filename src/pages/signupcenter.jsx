@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import LottieApp from "../Components/lottie";
-import { HEALTH_LOTTIE } from "../constant/media";
+import { HEALTH_LOTTIE, SETTINGS, SETTINGS1 } from "../constant/media";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { db, messaging } from "../utils/firebase";
@@ -19,14 +19,14 @@ import { useAuthContext } from "../context/auth-context";
 const phoneRegExp = /7(1|7|3|8|0)([0-9]){7}/;
 const SignUpcenter = () => {
   const { checkIfAuthenticated } = useAuthContext();
-  const [latitude,setLatitude]=useState('');
-  const [longitude,setLongitude]=useState('');
-  useEffect(()=>{
-  navigator.geolocation.getCurrentPosition((position)=>{
-    setLatitude(position.coords.latitude);
-    setLongitude(position.coords.longitude);
-  })
-  },[])
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLatitude(position.coords.latitude);
+      setLongitude(position.coords.longitude);
+    });
+  }, []);
   const [token, setToken] = useState("");
   const [showTost, setShowTost] = useState(false);
   const [tost, setTost] = useState({
@@ -63,7 +63,7 @@ const SignUpcenter = () => {
               height: "100%",
             }}
           >
-            <LottieApp animationpath={HEALTH_LOTTIE} />
+            <LottieApp animationpath={SETTINGS} />
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -132,35 +132,32 @@ const SignUpcenter = () => {
                       localStorage.setItem("uid", auth?.currentUser?.uid);
                       const uid = userCredential?.user?.uid;
                       console.log(uid);
-                      setDoc(
-                        doc(db, "centers", uid),
-                        {
-                          name: values.centerName,
-                          email: values.centerEmail,
-                          phone: values.centerPhoneNumber,
-                          password: values.centerPassword,
-                          "A+": 0,
-                          "A-": 0,
-                          "AB+": 0,
-                          "AB-": 0,
-                          "B+": 0,
-                          "B-": 0,
-                          "O+": 0,
-                          "O-": 0,
-                          state: "",
-                          district: "",
-                          neighborhood: "",
-                          last_update: "",
-                          lon:longitude.toString() ,
-                          lat: latitude.toString(),
-                          is_shown_phone: "1",
-                          is_shown: "1",
-                          is_gps_on: "1",
-                          image: "",
-                          token: token,
-                          status: "ACTIVE",
-                        }
-                      );
+                      setDoc(doc(db, "centers", uid), {
+                        name: values.centerName,
+                        email: values.centerEmail,
+                        phone: values.centerPhoneNumber,
+                        password: values.centerPassword,
+                        "A+": 0,
+                        "A-": 0,
+                        "AB+": 0,
+                        "AB-": 0,
+                        "B+": 0,
+                        "B-": 0,
+                        "O+": 0,
+                        "O-": 0,
+                        state: "",
+                        district: "",
+                        neighborhood: "",
+                        last_update: "",
+                        lon: longitude.toString(),
+                        lat: latitude.toString(),
+                        is_shown_phone: "1",
+                        is_shown: "1",
+                        is_gps_on: "1",
+                        image: "",
+                        token: token,
+                        status: "ACTIVE",
+                      });
                       checkIfAuthenticated();
                     })
                     .catch((error) => {
@@ -262,6 +259,7 @@ const SignUpcenter = () => {
                         mr: 1,
                         mt: 3,
                         mb: 2,
+                        fontFamily: "fsalberarabic",
                         bgcolor: "#e22c34",
                         color: "white",
                         borderRadius: "10px",

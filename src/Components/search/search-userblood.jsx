@@ -74,7 +74,7 @@ export const SearchUserBlood = () => {
       }),
     })
       .then((res) => {
-        //console.log(res)
+        console.log(res)
       })
       .catch((err) => {
         console.log(err);
@@ -83,62 +83,63 @@ export const SearchUserBlood = () => {
 
   const SearhBloold = async () => {
     setProgress(true);
-    const docRf = query(
-      collection(db, "donors"),
-      where("state", "==", state),
-      where("district", "==", district)
-    );
-
-    await getDocs(docRf).then((response) => {
-      const DataUser = response.docs.map((doc) => ({
-        data: doc.data(),
-        id: doc.id,
-      }));
-      setsearchBlood(DataUser);
-      setProgress(false);
-      setClickIcon(true);
-      localStorage.setItem("userLocation", JSON.stringify(DataUser));
-
-      // searchUserAndCenters({ Users: DataUser });
-    });
-
-    const docRfNot = query(
-      collection(db, "donors"),
-      where("state", "==", state),
-      where("district", "==", district)
-    );
-
-    await getDocs(docRfNot).then((response) => {
-      const DataUser = response.docs.map((doc) => ({
-        data: doc.data(),
-        id: doc.id,
-      }));
-      DataUser.map((user, index) => {
-        SendNotification({ to: user?.data?.token });
-        addDoc(collection(db, "search_logs"), {
-          blood_type: typeBlood,
-          district: district,
-          data: new Date().toISOString(),
-          donors_count: DataUser.length.toString() - 2,
-          user_type: userType,
-          token: user?.data?.token,
-          state: state,
+      const docRf = query(
+        collection(db, "donors"),
+        where("state", "==", state),
+        where("district", "==", district)
+      );
+  
+      await getDocs(docRf).then((response) => {
+        const DataUser = response.docs.map((doc) => ({
+          data: doc.data(),
+          id: doc.id,
+        }));
+        setsearchBlood(DataUser);
+        setProgress(false);
+        setClickIcon(true);
+        localStorage.setItem("userLocation", JSON.stringify(DataUser));
+  
+        // searchUserAndCenters({ Users: DataUser });
+      });
+  
+      const docRfNot = query(
+        collection(db, "donors"),
+        where("state", "==", state),
+        where("district", "==", district)
+      );
+  
+      await getDocs(docRfNot).then((response) => {
+        const DataUser = response.docs.map((doc) => ({
+          data: doc.data(),
+          id: doc.id,
+        }));
+        DataUser.map((user, index) => {
+          SendNotification({ to: user?.data?.token });
+          addDoc(collection(db, "search_logs"), {
+            blood_type: typeBlood,
+            district: district,
+            data: new Date().toISOString(),
+            donors_count: DataUser.length.toString() - 2,
+            user_type: userType,
+            token: user?.data?.token,
+            state: state,
+          });
         });
       });
-    });
-    const docRfCenter = query(
-      collection(db, "centers"),
-      where("state", "==", state),
-      where("district", "==", district)
-    );
-
-    await getDocs(docRfCenter).then((response) => {
-      const DataCenter = response.docs.map((doc) => ({ data: doc.data() }));
-      localStorage.setItem("centerLocation", JSON.stringify(DataCenter));
-      setsearchBloodCenter(DataCenter);
-      // TODO convert to state management
-      // searchUserAndCenters({ Centers: DataCenter });
-    });
+      const docRfCenter = query(
+        collection(db, "centers"),
+        where("state", "==", state),
+        where("district", "==", district)
+      );
+  
+      await getDocs(docRfCenter).then((response) => {
+        const DataCenter = response.docs.map((doc) => ({ data: doc.data() }));
+        localStorage.setItem("centerLocation", JSON.stringify(DataCenter));
+        setsearchBloodCenter(DataCenter);
+        // TODO convert to state management
+        // searchUserAndCenters({ Centers: DataCenter });
+      });
+    
   };
   const [Stateid, setStateid] = useState([]);
   const [City, setCity] = useState([]);

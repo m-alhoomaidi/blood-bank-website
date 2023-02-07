@@ -201,7 +201,7 @@ export const AuthProvider = (props) => {
             const id = localStorage.getItem("uid");
             const docRef = doc(db, "donors", id);
             const docSnap = await getDoc(docRef);
-            const user = docSnap.data();
+            const user = docSnap.data(); 
             if (user) {
                 localStorage.setItem("type", "user")
                 updateUser(user);

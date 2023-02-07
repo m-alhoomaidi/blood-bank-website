@@ -129,7 +129,7 @@ export const CardSucces = ({displayed,Hand,IsShowning})=>{
                                    variant="contained" 
                                    color="success" 
                                    onClick={() => {
-                                                   Hand();
+                                                   
                                                    ShowUser();
                                                   }}
                                    >

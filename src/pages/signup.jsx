@@ -277,7 +277,7 @@ async function requestPermissions (){
                   )}
                   //value={bloodtype}
                   onChange={(event, newBloodtype) =>
-                    setFieldValue("bloodType", newBloodtype)
+                  setFieldValue("bloodType", newBloodtype)
                   }
                 />
                 <Autocomplete
@@ -288,7 +288,7 @@ async function requestPermissions (){
                     marginBottom: "15px",
                   }}
                   options={city}
-                  getOptionLabel={(option) => option?.name}
+                  getOptionLabel={(option) => option?.name || ""}
                   value={values.cities}
                   // disableCloseOnSelect
                   // disableClearable
@@ -316,7 +316,7 @@ async function requestPermissions (){
                   onChange={(event, newVal) => {
                     setFieldValue("governer", newVal);
                   }}
-                  getOptionLabel={(option) => option?.name}
+                  getOptionLabel={(option) => option?.name || ""}
                   value={values.governer}
                   // disableCloseOnSelect
                   // disableClearable

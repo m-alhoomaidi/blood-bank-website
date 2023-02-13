@@ -108,10 +108,10 @@ const SignUpcenter = () => {
                 }}
                 validationSchema={Yup.object().shape({
                   centerName: Yup.string()
-                  .max(255)
-                  .required("مطلوب إدخال اسم"),
+                    .max(255)
+                    .required("مطلوب إدخال اسم"),
                   centerEmail: Yup.string()
-                    .email()
+                    .email("يجب إدخال إيميل صالح")
                     .required("مطلوب إدخال ايميل"),
                   centerPhoneNumber: Yup.string()
                     .max(9, "يجب إدخال رقم صالح")

@@ -93,9 +93,6 @@ const Try = (props) => {
 
 
   const phoneRegExp = /7(1|7|3|8|0)([0-9]){7}/;
-  // const [bloodtype,setBloodtype]= useState("");
-  // const [citiess,setCitiess]= useState("");
-  // const [governerss,setGoverners]= useState("");
   const [showTost, setShowTost] = useState(false);
   const [tost, setTost] = useState({
     tostMsg: " البريد الإلكتروني موجود مسبقًا",
@@ -120,7 +117,7 @@ const Try = (props) => {
             .max(255)
             .required("مطلوب إدخال اسم"),
           email: Yup.string()
-            .email()
+            .email("يجب إدخال إيميل صالح")
             .required("مطلوب إدخال ايميل"),
           phone: Yup.string()
             .max(9, "يجب إدخال رقم صالح")
@@ -146,7 +143,6 @@ const Try = (props) => {
             .then((userCredential) => {
               localStorage.setItem("uid", auth?.currentUser?.uid);
               const uid = userCredential.user.uid;
-
               setDoc(doc(db, "donors", uid), {
                 name: values.name,
                 email: values.email,
@@ -187,7 +183,6 @@ const Try = (props) => {
           isSubmitting,
           validateField,
           setFieldValue,
-          /* and other goodies */
         }) => (
           <Form onSubmit={handleSubmit}>
             <FormSteps
@@ -278,10 +273,7 @@ const Try = (props) => {
                   margin="normal"
                   options={bloodTypes}
                   getOptionLabel={(option) => option || ""}
-                  //onChange={handleChange}
                   value={values.bloodType}
-                  // disableCloseOnSelect
-                  // disableClearable
                   variant="outlined"
                   renderInput={(params) => (
                     <TextField
@@ -291,7 +283,6 @@ const Try = (props) => {
                       helperText={touched.bloodType && errors.bloodType}
                     />
                   )}
-                  //value={bloodtype}
                   onChange={(event, newBloodtype) =>
                     setFieldValue("bloodType", newBloodtype)
                   }
@@ -306,8 +297,6 @@ const Try = (props) => {
                   options={city}
                   getOptionLabel={(option) => option?.name || ""}
                   value={values.cities}
-                  // disableCloseOnSelect
-                  // disableClearable
                   onChange={(event, newVal) => {
                     setFieldValue("cities", newVal);
                     handleChangeGovernorate(newVal);
@@ -321,8 +310,6 @@ const Try = (props) => {
                       helperText={touched.cities && errors.cities}
                     />
                   )}
-                // value={citiess}
-                // onChange={(event,newCitiess)=> setFieldValue("cities",newCitiess)}
                 />
                 <Autocomplete
                   id="governer"
@@ -334,8 +321,6 @@ const Try = (props) => {
                   }}
                   getOptionLabel={(option) => option?.name || ""}
                   value={values.governer}
-                  // disableCloseOnSelect
-                  // disableClearable
                   variant="outlined"
                   renderInput={(params) => (
                     <TextField
@@ -345,8 +330,6 @@ const Try = (props) => {
                       helperText={touched.governer && errors.governer}
                     />
                   )}
-                //value={governerss}
-                // onChange={(event,newGoverners)=> setFieldValue("governer",newGoverners) }
                 />
                 <Field
                   type="text"

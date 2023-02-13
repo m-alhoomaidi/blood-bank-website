@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { create } from "jss";
+import rtl from "jss-rtl";
 import {
   Autocomplete,
   Box,
@@ -6,6 +8,12 @@ import {
   CardContent,
   TextField,
 } from "@mui/material";
+import {
+  StylesProvider,
+  jssPreset,
+  ThemeProvider,
+  createTheme,
+} from "@material-ui/core/styles";
 import { Field, Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
@@ -36,19 +44,19 @@ const bloodTypes = ["A+", "B+", "AB+", "O+", "A-", "B-", "AB-", "O-"];
 const data = JSON.parse(JSON.stringify(Countryes));
 const Try = (props) => {
   const { checkIfAuthenticated } = useAuthContext();
-  const [token,setToken]=useState("");
-  const [latitude,setLatitude]=useState('');
-  const [longitude,setLongitude]=useState('');
-  useEffect(()=>{
-  navigator.geolocation.getCurrentPosition((position)=>{
-    setLatitude(position.coords.latitude);
-    setLongitude(position.coords.longitude);
-  }) 
-  },[])
+  const [token, setToken] = useState("");
+  const [latitude, setLatitude] = useState('');
+  const [longitude, setLongitude] = useState('');
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLatitude(position.coords.latitude);
+      setLongitude(position.coords.longitude);
+    })
+  }, [])
   const [city, setCity] = useState(
     data?.map((item) => {
       return {
-        id: item?.id, 
+        id: item?.id,
         name: item?.name,
       };
     })
@@ -62,29 +70,28 @@ const Try = (props) => {
       setGoverner(cityData);
     }
   };
-async function requestPermissions (){
-  await Notification.requestPermission().then((permission)=>{
-    if(permission === 'granted'){
-      getToken(messaging,{vapidKey:'BBn3zGcKMynrgirvOIsFXTHoTHKNW-iX3FWefaw9zUVbRygfIzYSQqHqJabWsNcg5v-oYG2E1tDBsh42WR7RNzQ'}).then((token)=>{
-        
-        setToken(token);
-      });
-    } else if(permission === 'denied') 
-    {
-     alert("rrrrrrrrrrrrr")
- 
-    }
-   
+  async function requestPermissions() {
+    await Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        getToken(messaging, { vapidKey: 'BBn3zGcKMynrgirvOIsFXTHoTHKNW-iX3FWefaw9zUVbRygfIzYSQqHqJabWsNcg5v-oYG2E1tDBsh42WR7RNzQ' }).then((token) => {
 
-   });
+          setToken(token);
+        });
+      } else if (permission === 'denied') {
+        alert("rrrrrrrrrrrrr")
+
+      }
+
+
+    });
   }
-  useEffect(()=>{
+  useEffect(() => {
     requestPermissions();
 
-  },[]);
- 
- 
- 
+  }, []);
+
+
+
   const phoneRegExp = /7(1|7|3|8|0)([0-9]){7}/;
   // const [bloodtype,setBloodtype]= useState("");
   // const [citiess,setCitiess]= useState("");
@@ -109,20 +116,28 @@ async function requestPermissions (){
           address: "",
         }}
         validationSchema={Yup.object().shape({
-          name: Yup.string().max(255).required("مطلوب إدخال اسم"),
-          email: Yup.string().email().required("مطلوب إدخال ايميل"),
-          // phone: Yup.string().max(9).matches(phoneRegExp, "مطلوب إدخال رقم هاتف"),
+          name: Yup.string()
+            .max(255)
+            .required("مطلوب إدخال اسم"),
+          email: Yup.string()
+            .email()
+            .required("مطلوب إدخال ايميل"),
           phone: Yup.string()
-            .max(9)
-            .min(9)
+            .max(9, "يجب إدخال رقم صالح")
+            .min(9, "يجب إدخال رقم صالح")
             .matches(phoneRegExp, "مطلوب إدخال رقم هاتف")
             .required("مطلوب إدخال رقم هاتف"),
-          //phone: Yup.string().required( "مطلوب إدخال رقم هاتف"),
-          password: Yup.string().min(6).required("مطلوب  إدخال كلمة سر"),
-          bloodType: Yup.string().required("اختر فصيلة دم"),
-          cities: Yup.object().required("اختر مدينتك الحالية"),
-          governer: Yup.object().required("اختر مديريتك الحالية"),
-          address: Yup.string().required("ادخل عنوانك"),
+          password: Yup.string()
+            .min(6, "لا يقل عن 6 أرقام ")
+            .required("مطلوب  إدخال كلمة سر"),
+          bloodType: Yup.string()
+            .required("اختر فصيلة دم"),
+          cities: Yup.object()
+            .required("اختر مدينتك الحالية"),
+          governer: Yup.object()
+            .required("اختر مديريتك الحالية"),
+          address: Yup.string()
+            .required("ادخل عنوانك"),
         })}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(false);
@@ -131,7 +146,7 @@ async function requestPermissions (){
             .then((userCredential) => {
               localStorage.setItem("uid", auth?.currentUser?.uid);
               const uid = userCredential.user.uid;
-             
+
               setDoc(doc(db, "donors", uid), {
                 name: values.name,
                 email: values.email,
@@ -140,13 +155,13 @@ async function requestPermissions (){
                 state: values.cities.name,
                 district: values.governer.name,
                 neighborhood: values.address,
-                lon:longitude.toString() ,
+                lon: longitude.toString(),
                 lat: latitude.toString(),
                 is_shown_phone: "1",
                 is_shown: "1",
                 is_gps_on: "1",
                 image: "",
-                token:token,
+                token: token,
                 status: "ACTIVE",
               });
               checkIfAuthenticated();
@@ -277,7 +292,7 @@ async function requestPermissions (){
                   )}
                   //value={bloodtype}
                   onChange={(event, newBloodtype) =>
-                  setFieldValue("bloodType", newBloodtype)
+                    setFieldValue("bloodType", newBloodtype)
                   }
                 />
                 <Autocomplete
@@ -305,8 +320,8 @@ async function requestPermissions (){
                       helperText={errors.cities && errors.cities}
                     />
                   )}
-                  // value={citiess}
-                  // onChange={(event,newCitiess)=> setFieldValue("cities",newCitiess)}
+                // value={citiess}
+                // onChange={(event,newCitiess)=> setFieldValue("cities",newCitiess)}
                 />
                 <Autocomplete
                   id="governer"
@@ -329,8 +344,8 @@ async function requestPermissions (){
                       helperText={errors.governer && errors.governer}
                     />
                   )}
-                  //value={governerss}
-                  // onChange={(event,newGoverners)=> setFieldValue("governer",newGoverners) }
+                //value={governerss}
+                // onChange={(event,newGoverners)=> setFieldValue("governer",newGoverners) }
                 />
                 <Field
                   type="text"
@@ -382,6 +397,8 @@ const FormSteps = (props) => {
     setStep(step + 1);
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
+  const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+  const rtlTheme = createTheme({ direction: "rtl" });
   return (
     <>
       <Grid container component="main" sx={{ dir: "ltr", marginTop: "20px" }}>
@@ -417,128 +434,132 @@ const FormSteps = (props) => {
                 width: { xs: "90%", md: "70%" },
               }}
             >
-              <Stepper
-                activeStep={activeStep}
-                sx={{
-                  "& .css-gz0zcn-MuiSvgIcon-root-MuiStepIcon-root.Mui-active ":
-                    {
-                      color: "red",
-                    },
-                  "& .css-gz0zcn-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed":
-                    {
-                      color: "green",
-                    },
-                }}
-              >
-                {steps.map((label, index) => {
-                  const stepProps = {};
-                  const labelProps = {};
-                  return (
-                    <Step key={label} {...stepProps} sx={{ mb: "20px" }}>
-                      <StepLabel
-                        {...labelProps}
-                        sx={{
-                          "& .css-1gdzht-MuiStepLabel-label": {
-                            mr: "9px",
-                          },
-                          "& .css-gz0zcn-MuiSvgIcon-root-MuiStepIcon-root.Mui-active ":
-                            {
-                              color: "red",
-                            },
-                          "& .css-gz0zcn-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed":
-                            {
-                              color: "green",
-                            },
-                        }}
-                      >
-                        {label}
-                      </StepLabel>
-                    </Step>
-                  );
-                })}
-              </Stepper>
-              <Box>
-                <FormProvider>
-                  {childernArr[step - 1]}
-                  <React.Fragment>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        pt: 2,
-                      }}
-                    >
-                      {step > 1 && (
-                        <Button
-                          onClick={goBack}
-                          disabled={props.isSubmitting}
-                          variant="contained"
+              <ThemeProvider theme={rtlTheme}>
+                <StylesProvider jss={jss}>
+                  <Stepper
+                    activeStep={activeStep}
+                    sx={{
+                      "& .css-gz0zcn-MuiSvgIcon-root-MuiStepIcon-root.Mui-active ":
+                      {
+                        color: "red",
+                      },
+                      "& .css-gz0zcn-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed":
+                      {
+                        color: "green",
+                      },
+                    }}
+                  >
+                    {steps.map((label, index) => {
+                      const stepProps = {};
+                      const labelProps = {};
+                      return (
+                        <Step key={label} {...stepProps} sx={{ mb: "20px" }}>
+                          <StepLabel
+                            {...labelProps}
+                            sx={{
+                              "& .css-1gdzht-MuiStepLabel-label": {
+                                mr: "9px",
+                              },
+                              "& .css-gz0zcn-MuiSvgIcon-root-MuiStepIcon-root.Mui-active ":
+                              {
+                                color: "red",
+                              },
+                              "& .css-gz0zcn-MuiSvgIcon-root-MuiStepIcon-root.Mui-completed":
+                              {
+                                color: "green",
+                              },
+                            }}
+                          >
+                            {label}
+                          </StepLabel>
+                        </Step>
+                      );
+                    })}
+                  </Stepper>
+                  <Box>
+                    <FormProvider>
+                      {childernArr[step - 1]}
+                      <React.Fragment>
+                        <Box
                           sx={{
-                            mr: 1,
-                            mt: 3,
-                            mb: 2,
-                            bgcolor: "#e22c34",
-                            color: "white",
-                            borderRadius: "10px",
-                            "&:hover": {
-                              backgroundColor: "red",
-                              textDecoration: "none",
-                            },
+                            display: "flex",
+                            flexDirection: "row",
+                            pt: 2,
                           }}
                         >
-                          <ArrowForwardIcon />
-                          السابق
-                        </Button>
-                      )}
-                      {step < childernArr.length && (
-                        <Button
-                          onClick={goNext}
-                          disabled={props.isSubmitting}
-                          variant="contained"
-                          sx={{
-                            mr: 1,
-                            mt: 3,
-                            mb: 2,
-                            bgcolor: "#e22c34",
-                            color: "white",
-                            borderRadius: "10px",
-                            "&:hover": {
-                              backgroundColor: "red",
-                              textDecoration: "none",
-                            },
-                          }}
-                        >
-                          <ArrowBackIcon />
-                          التالي
-                        </Button>
-                      )}
-                      <Box sx={{ flex: "1 1 auto" }} />
-                      {step === childernArr.length && (
-                        <Button
-                          type="submit"
-                          onClick={props.handleSubmit}
-                          disabled={props.isSubmitting}
-                          variant="contained"
-                          sx={{
-                            mr: 1,
-                            mt: 3,
-                            mb: 2,
-                            bgcolor: "#e22c34",
-                            color: "white",
-                            borderRadius: "10px",
-                            "&:hover": {
-                              backgroundColor: "red",
-                              textDecoration: "none",
-                            },
-                          }}
-                        >
-                          تسجيل
-                        </Button>
-                      )}
-                    </Box>
-                  </React.Fragment>
-                </FormProvider>
-              </Box>
+                          {step > 1 && (
+                            <Button
+                              onClick={goBack}
+                              disabled={props.isSubmitting}
+                              variant="contained"
+                              sx={{
+                                mr: 1,
+                                mt: 3,
+                                mb: 2,
+                                bgcolor: "#e22c34",
+                                color: "white",
+                                borderRadius: "10px",
+                                "&:hover": {
+                                  backgroundColor: "red",
+                                  textDecoration: "none",
+                                },
+                              }}
+                            >
+                              <ArrowForwardIcon />
+                              السابق
+                            </Button>
+                          )}
+                          {step < childernArr.length && (
+                            <Button
+                              onClick={goNext}
+                              disabled={props.isSubmitting}
+                              variant="contained"
+                              sx={{
+                                mr: 1,
+                                mt: 3,
+                                mb: 2,
+                                bgcolor: "#e22c34",
+                                color: "white",
+                                borderRadius: "10px",
+                                "&:hover": {
+                                  backgroundColor: "red",
+                                  textDecoration: "none",
+                                },
+                              }}
+                            >
+                              <ArrowBackIcon />
+                              التالي
+                            </Button>
+                          )}
+                          <Box sx={{ flex: "1 1 auto" }} />
+                          {step === childernArr.length && (
+                            <Button
+                              type="submit"
+                              onClick={props.handleSubmit}
+                              disabled={props.isSubmitting}
+                              variant="contained"
+                              sx={{
+                                mr: 1,
+                                mt: 3,
+                                mb: 2,
+                                bgcolor: "#e22c34",
+                                color: "white",
+                                borderRadius: "10px",
+                                "&:hover": {
+                                  backgroundColor: "red",
+                                  textDecoration: "none",
+                                },
+                              }}
+                            >
+                              تسجيل
+                            </Button>
+                          )}
+                        </Box>
+                      </React.Fragment>
+                    </FormProvider>
+                  </Box>
+                </StylesProvider>
+              </ThemeProvider>
             </Box>
           </Box>
         </Grid>

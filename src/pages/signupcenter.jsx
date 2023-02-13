@@ -107,7 +107,9 @@ const SignUpcenter = () => {
                   centerPassword: "",
                 }}
                 validationSchema={Yup.object().shape({
-                  centerName: Yup.string().max(255).required("مطلوب إدخال اسم"),
+                  centerName: Yup.string()
+                  .max(255)
+                  .required("مطلوب إدخال اسم"),
                   centerEmail: Yup.string()
                     .email()
                     .required("مطلوب إدخال ايميل"),

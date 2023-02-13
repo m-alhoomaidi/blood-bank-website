@@ -206,8 +206,8 @@ const Try = (props) => {
                   onBlur={handleBlur}
                   value={values.name}
                   component={TextField}
-                  error={Boolean(touched.name && errors.name)}
-                  helperText={errors.name && errors.name}
+                  error={touched.name && Boolean(errors.name)}
+                  helperText={touched.name && errors.name}
                   margin="normal"
                   label="  الاسم الرباعي "
                   variant="outlined"
@@ -221,8 +221,8 @@ const Try = (props) => {
                   onBlur={handleBlur}
                   value={values.email}
                   component={TextField}
-                  error={errors.email ? true : false}
-                  helperText={errors.email && errors.email}
+                  error={touched.email && Boolean(errors.email)}
+                  helperText={touched.email && errors.email}
                   margin="normal"
                   label=" البريد الاكتروني  "
                   variant="outlined"
@@ -237,8 +237,8 @@ const Try = (props) => {
                   onBlur={handleBlur}
                   value={values.phone}
                   component={TextField}
-                  error={errors.phone ? true : false}
-                  helperText={errors.phone && errors.phone}
+                  error={touched.phone && Boolean(errors.phone)}
+                  helperText={touched.phone && errors.phone}
                   margin="normal"
                   label=" رقم الهاتف  "
                   variant="outlined"
@@ -252,8 +252,8 @@ const Try = (props) => {
                   onBlur={handleBlur}
                   value={values.password}
                   component={TextField}
-                  error={errors.password ? true : false}
-                  helperText={errors.password && errors.password}
+                  error={touched.password && Boolean(errors.password)}
+                  helperText={touched.password && errors.password}
                   margin="normal"
                   label=" كلمة السر "
                   variant="outlined"
@@ -277,6 +277,7 @@ const Try = (props) => {
                   name="bloodType"
                   margin="normal"
                   options={bloodTypes}
+                  getOptionLabel={(option) => option || ""}
                   //onChange={handleChange}
                   value={values.bloodType}
                   // disableCloseOnSelect
@@ -286,8 +287,8 @@ const Try = (props) => {
                     <TextField
                       {...params}
                       label="فصيلة دمك ؟"
-                      error={errors.bloodType ? true : false}
-                      helperText={errors.bloodType && errors.bloodType}
+                      error={touched.bloodType && Boolean(errors.bloodType)}
+                      helperText={touched.bloodType && errors.bloodType}
                     />
                   )}
                   //value={bloodtype}
@@ -316,8 +317,8 @@ const Try = (props) => {
                     <TextField
                       {...params}
                       label="المحافظة"
-                      error={errors.cities ? true : false}
-                      helperText={errors.cities && errors.cities}
+                      error={touched.cities && Boolean(errors.cities)}
+                      helperText={touched.cities && errors.cities}
                     />
                   )}
                 // value={citiess}
@@ -340,8 +341,8 @@ const Try = (props) => {
                     <TextField
                       {...params}
                       label="المديرية"
-                      error={errors.governer ? true : false}
-                      helperText={errors.governer && errors.governer}
+                      error={touched.governer && Boolean(errors.governer)}
+                      helperText={touched.governer && errors.governer}
                     />
                   )}
                 //value={governerss}
@@ -356,8 +357,8 @@ const Try = (props) => {
                   onBlur={handleBlur}
                   value={values.address}
                   component={TextField}
-                  error={errors.address ? true : false}
-                  helperText={errors.address && errors.address}
+                  error={touched.address && Boolean(errors.address)}
+                  helperText={touched.address && errors.address}
                   margin="normal"
                   label="عنوان الحي"
                   variant="outlined"

@@ -192,10 +192,9 @@ const SignUpcenter = () => {
                       onBlur={handleBlur}
                       value={values.centerName}
                       component={TextField}
-                      error={errors.centerName ? true : false}
-                      helperText={errors.centerName && errors.centerName}
+                      error={touched.centerName && Boolean(errors.centerName)}
+                      helperText={touched.centerName && errors.centerName}
                       margin="normal"
-                      autoFocus
                       label="   اسم بنك الدم "
                       variant="outlined"
                     />
@@ -208,8 +207,8 @@ const SignUpcenter = () => {
                       onBlur={handleBlur}
                       value={values.centerEmail}
                       component={TextField}
-                      error={errors.centerEmail ? true : false}
-                      helperText={errors.centerEmail && errors.centerEmail}
+                      error={touched.centerEmail && Boolean(errors.centerEmail)}
+                      helperText={touched.centerEmail && errors.centerEmail}
                       margin="normal"
                       label=" البريد الاكتروني  "
                       variant="outlined"
@@ -223,10 +222,8 @@ const SignUpcenter = () => {
                       onBlur={handleBlur}
                       value={values.centerPhoneNumber}
                       component={TextField}
-                      error={errors.centerPhoneNumber ? true : false}
-                      helperText={
-                        errors.centerPhoneNumber && errors.centerPhoneNumber
-                      }
+                      error={touched.centerPhoneNumber && Boolean(errors.centerPhoneNumber)}
+                      helperText={touched.centerPhoneNumber && errors.centerPhoneNumber}
                       margin="normal"
                       label=" رقم الهاتف  "
                       variant="outlined"
@@ -240,10 +237,8 @@ const SignUpcenter = () => {
                       onBlur={handleBlur}
                       value={values.centerPassword}
                       component={TextField}
-                      error={errors.centerPassword ? true : false}
-                      helperText={
-                        errors.centerPassword && errors.centerPassword
-                      }
+                      error={touched.centerPassword && Boolean(errors.centerPassword)}
+                      helperText={touched.centerPassword && errors.centerPassword}
                       margin="normal"
                       label=" كلمة السر "
                       variant="outlined"
